@@ -53,7 +53,7 @@ public class WebMagicConfig {
     @Bean
     public Spider spider(PageProcessor pageProcessor, Pipeline consolePipeline) {
         return Spider.create(pageProcessor)
-                .addUrl()
+                .addUrl(baseUrl)
                 .addPipeline(consolePipeline) // 데이터를 콘솔에 출력
                 .thread(5); // 쓰레드 수 설정
     }

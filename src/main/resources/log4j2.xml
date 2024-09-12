@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- 콘솔 출력 Appender: ANSI 색상을 사용하여 로그를 콘솔에 출력 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout disableAnsi="false"
+                           pattern="%style{%d{yyyy-MM-dd HH:mm:ss}}{cyan} %highlight{%-5level %c{1}:%L - %msg%n}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green, DEBUG=blue, TRACE=magenta}" />
+        </Console>
+
+        <!-- 파일 출력 Appender: 로그를 파일에 기록 (logs/app.log) -->
+        <File name="File" fileName="logs/app.log" append="true">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %c{1}:%L - %msg%n" />
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <!-- 루트 로거: 기본적으로 INFO 수준의 로그를 파일과 콘솔에 출력 -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Root>
+
+        <!-- org.springframework 패키지 로깅: DEBUG 수준으로 설정 -->
+        <Logger name="org.springframework" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Logger>
+
+        <!-- MyBatis SQL 로거 설정: DEBUG 수준으로 설정 -->
+        <Logger name="org.mybatis" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Logger>
+
+        <!-- 프로젝트의 패키지 (com.twolinecode) 설정: DEBUG로 로깅 -->
+        <Logger name="com.twolinecode" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Logger>
+
+        <!-- WebMagic 크롤러 관련 로거 설정: DEBUG로 로깅 -->
+        <Logger name="us.codecraft.webmagic" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="File" />
+        </Logger>
+    </Loggers>
+</Configuration>

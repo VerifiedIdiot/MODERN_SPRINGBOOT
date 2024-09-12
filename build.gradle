@@ -4,6 +4,11 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.6'
 }
 
+ext {
+	set('springAiVersion', "1.0.0")
+}
+
+
 group = 'com.twolinecode'
 version = '0.0.1-SNAPSHOT'
 
@@ -24,36 +29,52 @@ repositories {
 	maven { url 'https://repo.spring.io/milestone' }
 }
 
-ext {
-	set('springAiVersion', "1.0.0-M2")
-}
 
 dependencies {
+	// Spring Boot starters
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.ai:spring-ai-chroma-store-spring-boot-starter'
-	implementation 'org.springframework.ai:spring-ai-openai-spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2' // Use Log4j2 instead of Logback
+	implementation('org.springframework.boot:spring-boot-starter-web') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 	implementation 'org.springframework.session:spring-session-jdbc'
+
+	// Lombok for reducing boilerplate code
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	developmentOnly "org.springframework.ai:spring-ai-spring-boot-docker-compose:${springAiVersion}"
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-//	크롤러
+
+	// Log4j2 instead of Logback
+
+
+	// MySQL connector
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// WebMagic dependencies for web crawling
 	implementation 'us.codecraft:webmagic-core:0.7.3'
 	implementation 'us.codecraft:webmagic-extension:0.7.3'
 
+	// Development tools
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+//	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+//	developmentOnly "org.springframework.ai:spring-ai-spring-boot-docker-compose:${springAiVersion}"
+
+	// Test dependencies
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'jakarta.annotation:jakarta.annotation-api'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
 
-dependencyManagement {
-	imports {
-		mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+configurations {
+	configureEach {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
 	}
 }
+
 
 tasks.named('test') {
 	enabled = false
